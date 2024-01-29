@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Приготовление рецепта {{ recipe.name }}
+{% endblock %}
+
+
+{% block content %}
+    <div align="center" style="font-size: 25px">
+        <p>Успешно увеличено кол-во приготовленных блюд для каждого продукта из рецепта {{ recipe.name }}</p>
+        <a href="{% url 'main_page' %}">Вернуться на главную страницу</a>
+    </div>
+{% endblock content %}

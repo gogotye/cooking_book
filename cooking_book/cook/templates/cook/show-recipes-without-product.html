@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Рецепты без продукта {{ product_name }}
+{% endblock %}
+
+{% block content %}
+<div align="center" style="font-size: 25px">
+    <table>
+        {% for product_recipe in product_recipes %}
+        <tr>
+            <td>id: {{ product_recipe.id }} --- </td>
+            <td>Название: {{ product_recipe.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p>
+        <a href="{% url 'main_page' %}">Вернуться на главную страницу</a>
+    </p>
+</div>
+{% endblock content %}

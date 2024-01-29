@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div align="center" style="font-size: 25px">
+        <h4>Добавление продуктов к рецепту</h4>
+        <div>
+        <form action="{% url 'cook:navigation' %}" method="get">
+            <div>recipe id:<input type="number" name="recipe_id"></div>
+            <div>product id:<input type="number" name="product_id"></div>
+            <div>weight:<input type="number" name="weight"></div>
+            <input type="hidden" name="add_product_to_recipe" value="true">
+            <input type="submit" value="Добавить продукт">
+        </form>
+        </div>
+        <br>
+
+        <h4>Приготовить рецепт</h4>
+        <div>
+        <form action="{% url 'cook:navigation' %}" method="get">
+            <div>recipe id:<input type="number" name="recipe_id"></div>
+            <input type="hidden" name="cook_recipe" value="true">
+            <input type="submit" value="Приготовить">
+        </form>
+        </div>
+
+        <br>
+        <h4>Показать рецепты без указанного продукта (или если продукта меньше 10 грамм)</h4>
+        <div>
+        <form action="{% url 'cook:navigation' %}" method="get">
+            <div>product id:<input type="number" name="product_id"></div>
+            <input type="hidden" name="show_recipes_without_product" value="true">
+            <input type="submit" value="Показать рецепты">
+        </form>
+        </div>
+    </div>
+{% endblock %}

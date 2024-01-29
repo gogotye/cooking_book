@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Добавление продукта {{ product.name }}
+{% endblock %}
+
+
+{% block content %}
+    <div align="center" style="font-size: 25px">
+        <p>В рецепт {{ recipe.name }} успешно добавлен продукт {{ product.name }}</p>
+        <a href="{% url 'main_page' %}">Вернуться на главную страницу</a>
+    </div>
+{% endblock content %}
