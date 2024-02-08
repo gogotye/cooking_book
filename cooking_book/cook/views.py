@@ -2,7 +2,6 @@ from django.db.models import F, Value, Q
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Recipe, ProductRecipeRelations
-from django.core.exceptions import ObjectDoesNotExist
 from .utils import DefaultValues
 
 
@@ -13,9 +12,11 @@ def main_page(request: HttpRequest) -> HttpResponse:
 def navigation(request: HttpRequest) -> HttpResponseRedirect:
     if request.method == 'GET':
         if request.GET.get('add_product_to_recipe'):
-            recipe_id, product_id, weight = (int(request.GET.get('recipe_id')),
-                                             int(request.GET.get('product_id')),
-                                             int(request.GET.get('weight')))
+
+            recipe_id, product_id, weight = [
+                int(request.GET[elem]) for elem in filter(lambda x: x != 'add_product_to_recipe', request.GET)
+            ]
+
             return redirect('cook:add_product_to_recipe', recipe_id=recipe_id, product_id=product_id, weight=weight)
 
         elif request.GET.get('cook_recipe'):
@@ -34,14 +35,7 @@ def add_product_to_recipe(request: HttpRequest, recipe_id: int, product_id: int,
         recipe = get_object_or_404(Recipe, id=recipe_id)
         product = get_object_or_404(Product, id=product_id)
 
-        try:
-            obj: ProductRecipeRelations = ProductRecipeRelations.objects.get(product=product, recipe=recipe)
-        except ObjectDoesNotExist:
-            obj: ProductRecipeRelations = ProductRecipeRelations.objects.create(product=product, recipe=recipe,
-                                                                                weight=DefaultValues.ZERO)
-
-        obj.weight = weight
-        obj.save()
+        ProductRecipeRelations.objects.update_or_create(product=product, recipe=recipe, defaults={'weight': weight})
 
         return render(request, 'cook/add-product-to-recipe.html',
                       {'recipe': recipe, 'product': product})
